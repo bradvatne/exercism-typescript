@@ -16,7 +16,6 @@ export class Matrix {
       arr.push([]);
     }
     for (let item of this.nums) {
-      console.log(item);
       for (let num in item) {
         arr[num].push(item[num]);
       }

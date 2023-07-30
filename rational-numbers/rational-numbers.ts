@@ -7,6 +7,7 @@ export class Rational {
     this.denominator = y;
   }
 
+  //calculates greatest common denominator
   calc_gcd(n: Rational): number {
     let a = n.numerator;
     let b = n.denominator;
@@ -18,12 +19,14 @@ export class Rational {
     return a;
   }
 
+  //simplifies value to most primitive
   simplify(n: Rational): Rational {
     const gcd = this.calc_gcd(n);
     return new Rational(n.numerator / gcd, n.denominator / gcd);
   }
 
-  add(n: Rational): Rational {
+  //checks for equality
+  eq(n: Rational): Rational[] {
     let x = new Rational(
       this.numerator * n.denominator,
       this.denominator * n.denominator
@@ -32,36 +35,66 @@ export class Rational {
       n.numerator * this.denominator,
       n.denominator * this.denominator
     );
+    return [x, y];
+  }
+
+  //adds two rational
+  add(n: Rational): Rational {
+    const [x, y] = this.eq(n);
     let newNumerator = x.numerator + y.numerator;
     x.numerator = newNumerator;
     return this.simplify(x);
   }
 
-  sub() {
-    throw new Error("Remove this statement and implement this function");
+  //subtracts a rational from another
+  sub(n: Rational): Rational {
+    const [x, y] = this.eq(n);
+    const newNumerator = x.numerator - y.numerator;
+    x.numerator = newNumerator;
+    return this.simplify(x);
   }
 
-  mul() {
-    throw new Error("Remove this statement and implement this function");
+  //multiplies
+  mul(n: Rational): Rational {
+    return this.simplify(
+      new Rational(
+        this.numerator * n.numerator,
+        this.denominator * n.denominator
+      )
+    );
   }
 
-  div() {
-    throw new Error("Remove this statement and implement this function");
+  //divides
+  div(n: Rational): Rational {
+    return this.simplify(
+      new Rational(
+        this.numerator * n.denominator,
+        this.denominator * n.numerator
+      )
+    );
   }
 
-  abs() {
-    throw new Error("Remove this statement and implement this function");
+  //absolute value of rational
+  abs(): Rational {
+    return new Rational(Math.abs(this.numerator), Math.abs(this.denominator));
   }
 
-  exprational() {
-    throw new Error("Remove this statement and implement this function");
+  //rational number to the power of another rational number
+  exprational(n: number): Rational {
+    return this.simplify(
+      new Rational(this.numerator ** n, this.denominator ** n)
+    );
   }
 
-  expreal() {
-    throw new Error("Remove this statement and implement this function");
+  //rational number to a power of a real number
+  expreal(n: number): Rational {
+    return this.simplify(
+      new Rational(this.numerator ** n, this.denominator ** n)
+    );
   }
 
-  reduce() {
-    throw new Error("Remove this statement and implement this function");
+  //rational number reduced
+  reduce(): Rational {
+    return this.simplify(this);
   }
 }

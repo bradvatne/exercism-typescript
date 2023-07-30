@@ -1,100 +1,124 @@
 export class Rational {
   numerator: number;
+
   denominator: number;
 
-  constructor(x: number, y: number) {
-    this.numerator = x;
-    this.denominator = y;
+  constructor(numer: number, denom: number) {
+    this.numerator = numer;
+
+    this.denominator = denom;
+
+    this.reduce();
   }
 
-  //calculates greatest common denominator
-  calc_gcd(n: Rational): number {
-    let a = n.numerator;
-    let b = n.denominator;
-    while (b !== 0) {
-      let temp = b;
-      b = a % b;
-      a = temp;
-    }
-    return a;
+  add(rational: Rational): Rational {
+    this.numerator =
+      this.numerator * rational.denominator +
+      rational.numerator * this.denominator;
+
+    this.denominator = this.denominator * rational.denominator;
+
+    return this.reduce();
   }
 
-  //simplifies value to most primitive
-  simplify(n: Rational): Rational {
-    const gcd = this.calc_gcd(n);
-    return new Rational(n.numerator / gcd, n.denominator / gcd);
+  sub(rational: Rational): Rational {
+    this.numerator =
+      this.numerator * rational.denominator -
+      rational.numerator * this.denominator;
+
+    this.denominator = this.denominator * rational.denominator;
+
+    return this.reduce();
   }
 
-  //checks for equality
-  eq(n: Rational): Rational[] {
-    let x = new Rational(
-      this.numerator * n.denominator,
-      this.denominator * n.denominator
-    );
-    let y = new Rational(
-      n.numerator * this.denominator,
-      n.denominator * this.denominator
-    );
-    return [x, y];
+  mul(rational: Rational): Rational {
+    this.numerator = this.numerator * rational.numerator;
+
+    this.denominator = this.denominator * rational.denominator;
+
+    return this.reduce();
   }
 
-  //adds two rational
-  add(n: Rational): Rational {
-    const [x, y] = this.eq(n);
-    let newNumerator = x.numerator + y.numerator;
-    x.numerator = newNumerator;
-    return this.simplify(x);
+  div(rational: Rational): Rational {
+    this.numerator = this.numerator * rational.denominator;
+
+    this.denominator = this.denominator * rational.numerator;
+
+    return this.reduce();
   }
 
-  //subtracts a rational from another
-  sub(n: Rational): Rational {
-    const [x, y] = this.eq(n);
-    const newNumerator = x.numerator - y.numerator;
-    x.numerator = newNumerator;
-    return this.simplify(x);
-  }
-
-  //multiplies
-  mul(n: Rational): Rational {
-    return this.simplify(
-      new Rational(
-        this.numerator * n.numerator,
-        this.denominator * n.denominator
-      )
-    );
-  }
-
-  //divides
-  div(n: Rational): Rational {
-    return this.simplify(
-      new Rational(
-        this.numerator * n.denominator,
-        this.denominator * n.numerator
-      )
-    );
-  }
-
-  //absolute value of rational
   abs(): Rational {
-    return new Rational(Math.abs(this.numerator), Math.abs(this.denominator));
+    this.numerator = Math.abs(this.numerator);
+
+    this.denominator = Math.abs(this.denominator);
+
+    return this;
   }
 
-  //rational number to the power of another rational number
-  exprational(n: number): Rational {
-    return this.simplify(
-      new Rational(this.numerator ** n, this.denominator ** n)
-    );
+  exprational(num: number): Rational {
+    if (num >= 0) {
+      this.numerator = this.numerator ** num;
+
+      this.denominator = this.denominator ** num;
+    } else {
+      const prevNumer = this.numerator;
+
+      num = Math.abs(num);
+
+      this.numerator = this.denominator ** num;
+
+      this.denominator = prevNumer ** num;
+    }
+
+    return this.reposition();
   }
 
-  //rational number to a power of a real number
-  expreal(n: number): Rational {
-    return this.simplify(
-      new Rational(this.numerator ** n, this.denominator ** n)
-    );
+  expreal(num: number): number {
+    return num ** (this.numerator / this.denominator);
   }
 
-  //rational number reduced
   reduce(): Rational {
-    return this.simplify(this);
+    this.reposition();
+
+    if (this.numerator !== 0) {
+      if (this.numerator < 0 && this.denominator < 0) this.abs();
+      else if (this.denominator < 0) {
+        this.numerator = -this.numerator;
+
+        this.denominator = -this.denominator;
+      }
+
+      let x = 0,
+        gcd = Math.abs(this.numerator),
+        b = this.denominator;
+
+      while (b !== 0) {
+        x = gcd % b;
+
+        gcd = b;
+
+        b = x;
+      }
+
+      if (gcd > 1) {
+        this.numerator /= gcd;
+
+        this.denominator /= gcd;
+      }
+    }
+
+    return this;
+  }
+
+  reposition(): Rational {
+    if (this.numerator === 0) this.denominator = 1;
+    else if (this.numerator < 0 && this.denominator < 0) this.abs();
+    else if (this.denominator < 0) {
+      this.numerator = -this.numerator;
+
+      this.denominator = -this.denominator;
+    }
+
+    return this;
   }
 }

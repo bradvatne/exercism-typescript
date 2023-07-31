@@ -1,27 +1,41 @@
-const KEY_INPUT = "abcdefghijklmnopqrstuvwxyz";
+const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
 export class SimpleCipher {
   key: string;
-  constructor() {
-    this.key = this.generateKey();
+
+  constructor(key?: string) {
+    if (key === undefined) {
+      this.key = this.generateKey();
+    } else {
+      if (!this.isValidKey(key))
+        throw new Error("Key must be lowercase letters only");
+      this.key = key;
+    }
+  }
+
+  isValidKey(key: string): boolean {
+    return /^[a-z]+$/.test(key);
   }
 
   generateKey(): string {
     let newKey = "";
     for (let i = 0; i < 100; i++) {
-      newKey += KEY_INPUT[Math.floor(Math.random() * KEY_INPUT.length)];
+      newKey += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
     }
     return newKey;
   }
+
   encode(str: string): string {
     let encoded = "";
     for (let i = 0; i < str.length; i++) {
       const char = str[i];
-      const charIndex = KEY_INPUT.indexOf(char);
+      const charIndex = ALPHABET.indexOf(char);
       if (charIndex === -1) {
         encoded += char;
       } else {
-        encoded += this.key[charIndex];
+        const shiftAmount = ALPHABET.indexOf(this.key[i % this.key.length]);
+        const newCharIndex = (charIndex + shiftAmount) % ALPHABET.length;
+        encoded += ALPHABET[newCharIndex];
       }
     }
     return encoded;
@@ -31,11 +45,14 @@ export class SimpleCipher {
     let decoded = "";
     for (let i = 0; i < str.length; i++) {
       const char = str[i];
-      const charIndex = this.key.indexOf(char);
+      const charIndex = ALPHABET.indexOf(char);
       if (charIndex === -1) {
         decoded += char;
       } else {
-        decoded += KEY_INPUT[charIndex];
+        const shiftAmount = ALPHABET.indexOf(this.key[i % this.key.length]);
+        const newCharIndex =
+          (charIndex - shiftAmount + ALPHABET.length) % ALPHABET.length;
+        decoded += ALPHABET[newCharIndex];
       }
     }
     return decoded;

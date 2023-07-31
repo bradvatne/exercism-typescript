@@ -1,4 +1,4 @@
-import { SimpleCipher } from "./simple-cipher";
+import { SimpleCipher } from "./simple-cipher"
 
 describe("Random key generation", () => {
   it("generates keys at random", () => {
@@ -7,19 +7,19 @@ describe("Random key generation", () => {
     // strings of lowercase letters at random, the odds of two consecutively
     // generated keys being identical are astronomically low.
     expect(new SimpleCipher().key).not.toEqual(new SimpleCipher().key);
-  });
-});
+  })
+})
 
 describe("Random key cipher", () => {
-  const simpleCipher = new SimpleCipher();
+  const simpleCipher = new SimpleCipher()
 
   it("has a key made of letters", () => {
-    expect(simpleCipher.key).toMatch(/^[a-z]+$/);
-  });
+    expect(simpleCipher.key).toMatch(/^[a-z]+$/)
+  })
 
   it("has a key that is at least 100 characters long", () => {
-    expect(simpleCipher.key.length).toBeGreaterThanOrEqual(100);
-  });
+    expect(simpleCipher.key.length).toBeGreaterThanOrEqual(100)
+  })
 
   // Here we take advantage of the fact that plaintext of "aaa..."
   // outputs the key. This is a critical problem with shift ciphers, some

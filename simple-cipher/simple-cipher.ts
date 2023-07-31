@@ -13,9 +13,31 @@ export class SimpleCipher {
     }
     return newKey;
   }
-  encode(/* Parameters go here */) {}
+  encode(str: string): string {
+    let encoded = "";
+    for (let i = 0; i < str.length; i++) {
+      const char = str[i];
+      const charIndex = KEY_INPUT.indexOf(char);
+      if (charIndex === -1) {
+        encoded += char;
+      } else {
+        encoded += this.key[charIndex];
+      }
+    }
+    return encoded;
+  }
 
-  decode(/* Parameters go here */) {
-    throw new Error("Remove this statement and implement this function");
+  decode(str: string): string {
+    let decoded = "";
+    for (let i = 0; i < str.length; i++) {
+      const char = str[i];
+      const charIndex = this.key.indexOf(char);
+      if (charIndex === -1) {
+        decoded += char;
+      } else {
+        decoded += KEY_INPUT[charIndex];
+      }
+    }
+    return decoded;
   }
 }

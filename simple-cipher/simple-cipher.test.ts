@@ -20,75 +20,75 @@ describe("Random key cipher", () => {
   it("has a key that is at least 100 characters long", () => {
     expect(simpleCipher.key.length).toBeGreaterThanOrEqual(100);
   });
-});
-//   // Here we take advantage of the fact that plaintext of "aaa..."
-//   // outputs the key. This is a critical problem with shift ciphers, some
-//   // characters will always output the key verbatim.
-//   xit('can encode', () => {
-//     expect(simpleCipher.encode('aaaaaaaaaa')).toEqual(
-//       simpleCipher.key.substring(0, 10)
-//     )
-//   })
 
-//   xit('can decode', () => {
-//     expect(simpleCipher.decode(simpleCipher.key.substring(0, 10))).toEqual(
-//       'aaaaaaaaaa'
-//     )
-//   })
+  // Here we take advantage of the fact that plaintext of "aaa..."
+  // outputs the key. This is a critical problem with shift ciphers, some
+  // characters will always output the key verbatim.
+  it('can encode', () => {
+    expect(simpleCipher.encode('aaaaaaaaaa')).toEqual(
+      simpleCipher.key.substring(0, 10)
+    )
+  })
 
-//   xit('is reversible', () => {
-//     const plaintext = 'abcdefghij'
-//     expect(simpleCipher.decode(simpleCipher.encode(plaintext))).toEqual(
-//       plaintext
-//     )
-//   })
-// })
+  it('can decode', () => {
+    expect(simpleCipher.decode(simpleCipher.key.substring(0, 10))).toEqual(
+      'aaaaaaaaaa'
+    )
+  })
 
-// describe('Substitution cipher', () => {
-//   const key = 'abcdefghij'
-//   const simpleCipher = new SimpleCipher(key)
+  it('is reversible', () => {
+    const plaintext = 'abcdefghij'
+    expect(simpleCipher.decode(simpleCipher.encode(plaintext))).toEqual(
+      plaintext
+    )
+  })
+})
 
-//   xit('keeps the submitted key', () => {
-//     expect(simpleCipher.key).toEqual(key)
-//   })
+describe('Substitution cipher', () => {
+  const key = 'abcdefghij'
+  const simpleCipher = new SimpleCipher(key)
 
-//   xit('can encode', () => {
-//     expect(simpleCipher.encode('aaaaaaaaaa')).toEqual('abcdefghij')
-//   })
+  it('keeps the submitted key', () => {
+    expect(simpleCipher.key).toEqual(key)
+  })
 
-//   xit('can decode', () => {
-//     expect(simpleCipher.decode('abcdefghij')).toEqual('aaaaaaaaaa')
-//   })
+  it('can encode', () => {
+    expect(simpleCipher.encode('aaaaaaaaaa')).toEqual('abcdefghij')
+  })
 
-//   xit('is reversible', () => {
-//     expect(simpleCipher.decode(simpleCipher.encode('abcdefghij'))).toEqual(
-//       'abcdefghij'
-//     )
-//   })
+  it('can decode', () => {
+    expect(simpleCipher.decode('abcdefghij')).toEqual('aaaaaaaaaa')
+  })
 
-//   xit(': double shift encode', () => {
-//     expect(new SimpleCipher('iamapandabear').encode('iamapandabear')).toEqual(
-//       'qayaeaagaciai'
-//     )
-//   })
+  it('is reversible', () => {
+    expect(simpleCipher.decode(simpleCipher.encode('abcdefghij'))).toEqual(
+      'abcdefghij'
+    )
+  })
 
-//   xit('can wrap on encode', () => {
-//     expect(simpleCipher.encode('zzzzzzzzzz')).toEqual('zabcdefghi')
-//   })
+  it(': double shift encode', () => {
+    expect(new SimpleCipher('iamapandabear').encode('iamapandabear')).toEqual(
+      'qayaeaagaciai'
+    )
+  })
 
-//   xit('can wrap on decode', () => {
-//     expect(simpleCipher.decode('zabcdefghi')).toEqual('zzzzzzzzzz')
-//   })
+  it('can wrap on encode', () => {
+    expect(simpleCipher.encode('zzzzzzzzzz')).toEqual('zabcdefghi')
+  })
 
-//   xit('can encode messages longer than the key"', () => {
-//     expect(new SimpleCipher('abc').encode('iamapandabear')).toEqual(
-//       'iboaqcnecbfcr'
-//     )
-//   })
+  it('can wrap on decode', () => {
+    expect(simpleCipher.decode('zabcdefghi')).toEqual('zzzzzzzzzz')
+  })
 
-//   xit('can decode messages longer than the key', () => {
-//     expect(new SimpleCipher('abc').decode('iboaqcnecbfcr')).toEqual(
-//       'iamapandabear'
-//     )
-//   })
-// })
+  it('can encode messages longer than the key"', () => {
+    expect(new SimpleCipher('abc').encode('iamapandabear')).toEqual(
+      'iboaqcnecbfcr'
+    )
+  })
+
+  it('can decode messages longer than the key', () => {
+    expect(new SimpleCipher('abc').decode('iboaqcnecbfcr')).toEqual(
+      'iamapandabear'
+    )
+  })
+})

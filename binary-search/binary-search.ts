@@ -1,17 +1,19 @@
 export function find(arr: number[], tar: number): number | never {
-  const len = arr.length;
-  let low = 0;
-  let up = len - 1;
-
-  while (low <= up) {
-    const mid = Math.floor((low + up) / 2);
-    const cur = arr[mid];
-
-    if (cur === tar) return mid;
-
-    if (cur > tar) {
-      up = mid - 1;
-    } else low = mid + 1;
-  }
-  throw new Error("Value not in array");
+  return _find(arr, tar);
 }
+
+const _find = (
+  arr: number[],
+  tar: number,
+  up: number = arr.length - 1,
+  low: number = 0
+): number | never => {
+  const mid = Math.floor((up + low) / 2);
+  const cur = arr[mid];
+  if (low > up) throw new Error("Value not in array");
+  if (cur === tar) {
+    return mid;
+  } else if (cur < tar) {
+    return _find(arr, tar, up, mid + 1);
+  } else return _find(arr, tar, mid - 1, low);
+};

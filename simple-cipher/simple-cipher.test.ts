@@ -6,7 +6,7 @@ describe("Random key generation", () => {
     // But, if you have a generator that generates 100-character-long
     // strings of lowercase letters at random, the odds of two consecutively
     // generated keys being identical are astronomically low.
-    expect(new SimpleCipher().key).not.toEqual(new SimpleCipher().key);
+    expect(new SimpleCipher().key).not.toEqual(new SimpleCipher().key)
   })
 })
 
